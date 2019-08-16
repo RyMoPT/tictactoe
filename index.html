@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <head>
+<title>Project: TicTacToe</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<style>
+.container {
+    background-color: black;
+    margin:auto;
+    display:grid;
+    height: 400px;
+    width: 400px;
+    grid-gap: 10px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 
+        "box1 box2 box3"
+        "box4 box5 box6"
+        "box7 box8 box9"
+}
+.box1 {
+    grid-area: box1;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+
+}
+.box2 {
+    grid-area: box2;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+.box3 {
+    grid-area: box3;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+.box4 {
+    grid-area: box4;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+.box5 {
+    grid-area: box5;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+.box6 {
+    grid-area: box6;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+.box7 {
+    grid-area: box7;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+.box8 {
+    grid-area: box8;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+.box9 {
+    grid-area: box9;
+    background-color: white;
+    font-size: 100px;
+    text-align: center;
+}
+
+</style>
+    </head>
+    <body>
+
+
+        <div class="container">
+            <div class="box1 box" id = '0'></div>
+            <div class="box2 box" id = '1'></div>
+            <div class="box3 box" id = '2'></div>
+            <div class="box4 box" id = '3'></div>
+            <div class="box5 box" id = '4'></div>
+            <div class="box6 box" id = '5'></div>
+            <div class="box7 box" id = '6'></div>
+            <div class="box8 box" id = '7'></div>
+            <div class="box9 box" id = '8'></div>
+        </div>
+
+
+
+
+    <script> 
+
+const gameBoard = (() => {
+    const playerMoves = [,,,,,,,,];
+    return {playerMoves};
+    
+})();
+
+// const box1 = document.querySelector('.box1');
+// const box2 = document.querySelector('.box2');
+// const box3 = document.querySelector('.box3');
+// const box4 = document.querySelector('.box4');
+// const box5 = document.querySelector('.box5');
+// const box6 = document.querySelector('.box6');
+// const box7 = document.querySelector('.box7');
+// const box8 = document.querySelector('.box8');
+// const box9 = document.querySelector('.box9');
+
+const boxes = document.querySelectorAll('.box')
+
+let test = () => {
+    for (i = 0; boxes.length > 0; i++) {
+        gameBoard.playerMoves.forEach(element => {
+            boxes[i].innerHTML = gameBoard.playerMoves[i];
+            
+            
+        });
+    }
+}
+
+const displayController = (() => {
+    for (i = 0; boxes.length > 0; i++) {        
+        boxes[i].addEventListener('click', function(e) {
+            console.log(e.target);
+            console.log(e.target.innerHTML);
+            console.log(e.target.id);
+
+        if (e.target.innerText === 'x' || e.target.innerText === 'o') {
+            alert('Please choose an open spot');
+        } else{
+        let answer=prompt('x or o');
+        e.target.innerText = answer;
+        console.log(e.target.id);
+        gameBoard.playerMoves.splice(e.target.id, 0, e.target.innerText)
+        }
+
+
+        })
+
+}})();
+
+const players = name => {
+    const getName = () => name;
+    const sayName = () => console.log(`My name is ${name}`);
+    return {getName, sayName}
+}
+
+const playerOne = players('playerOne');
+const playerTwo = players('playerTwo');
+
+
+    </script>
+    </body>
+    <footer>
+        <h1>Designed by <a href='https://github.com/RyMoPT'>RyMoPT</a></h1>
+    </footer>
+</html>
