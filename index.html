@@ -99,7 +99,7 @@
     <script> 
 
 const gameBoard = (() => {
-    const playerMoves = [,,,,,,,,];
+    const playerMoves = [,,,,,,,,,];
     return {playerMoves};
     
 })();
@@ -116,17 +116,34 @@ const gameBoard = (() => {
 
 const boxes = document.querySelectorAll('.box')
 
-let test = () => {
-    for (i = 0; boxes.length > 0; i++) {
-        gameBoard.playerMoves.forEach(element => {
-            boxes[i].innerHTML = gameBoard.playerMoves[i];
+// let test = () => {
+//     for (i = 0; boxes.length > 0; i++) {
+//         gameBoard.playerMoves.forEach(element => {
+//             boxes[i].innerHTML = gameBoard.playerMoves[i];
             
             
-        });
+//         });
+//     }
+// }
+const gameFlow = (() => {
+    const playerOneMove = () => {
+        return 'x';
     }
-}
+    const playerTwoMove = () => {
+        return 'o';        
+    }
+    const playerTurn = (counter) => {
+            if (counter % 2 === 0) {
+                return gameFlow.playerOneMove();
+            } else {
+                return gameFlow.playerTwoMove();
+            }       
+    } 
+    return {playerTurn,playerOneMove,playerTwoMove}
+})();
 
 const displayController = (() => {
+    let counter = 0;
     for (i = 0; boxes.length > 0; i++) {        
         boxes[i].addEventListener('click', function(e) {
             console.log(e.target);
@@ -136,10 +153,12 @@ const displayController = (() => {
         if (e.target.innerText === 'x' || e.target.innerText === 'o') {
             alert('Please choose an open spot');
         } else{
-        let answer=prompt('x or o');
-        e.target.innerText = answer;
+            console.log(gameFlow.playerTurn(counter));
+        e.target.innerText = gameFlow.playerTurn(counter);
         console.log(e.target.id);
-        gameBoard.playerMoves.splice(e.target.id, 0, e.target.innerText)
+        gameBoard.playerMoves.splice(e.target.id, 1, e.target.innerText)
+        counter ++;
+        console.log(counter);
         }
 
 
