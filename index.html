@@ -13,9 +13,10 @@
     height: 400px;
     width: 400px;
     grid-gap: 10px;
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 100px);
+    grid-template-columns: repeat(3, 134px);
     grid-template-areas: 
+        "display display display"
         "box1 box2 box3"
         "box4 box5 box6"
         "box7 box8 box9"
@@ -75,11 +76,21 @@
     font-size: 100px;
     text-align: center;
 }
+.display {
+    grid-area: display;
+    background-color: aquamarine;
+    height: 100px;
+    width: 400px;
+}
+.resetBtn {
+    display: none;
+}
 
 </style>
     </head>
     <body>
         <div class="container">
+                <div class='display'></div>
                 <div class="box1 box" id = '0, 0'></div>
                 <div class="box2 box" id = '0, 1'></div>
                 <div class="box3 box" id = '0, 2'></div>
@@ -90,7 +101,34 @@
                 <div class="box8 box" id = '2, 1'></div>
                 <div class="box9 box" id = '2, 2'></div>
             </div>
+            <button class="resetBtn">Play again?</button>
     <script> 
+
+const display = document.querySelector('.display');
+const resetBtn = document.querySelector('.resetBtn');
+let counter = 0;
+resetBtn.addEventListener('click', function (e) {
+    resetBoard();
+})
+
+const resetBoard = () => {
+let boxesArray = [...boxes];
+    boxesArray.forEach(function(e) {
+    e.innerText='';
+})
+display.innerText='';
+gameBoard.playerMoves = [
+                            [,,,],
+                            [,,,],
+                            [,,,]
+                            ];
+counter = 0;
+console.log(counter);
+console.log(gameBoard.playerMoves);
+resetBtn.style.display= 'none';
+}
+
+
 const players = (name) => {
     const getName = () => name;
     const sayName = () => console.log(`My name is ${name}`);
@@ -101,7 +139,7 @@ const playerOne = players('playerOne');
 const playerTwo = players('playerTwo');
 
 const gameBoard = (() => {
-    const playerMoves = [
+    let playerMoves = [
         [,,,],
         [,,,],
         [,,,]
@@ -117,7 +155,28 @@ const gameFlow = (() => {
         return 'x';
     }
     const playerTwoMove = () => {
-        return 'o';        
+    let boxesArray = [...boxes];
+    let emptySpaces=[]
+    boxesArray.forEach(function(e) {
+        if (e.innerText === '') {
+            emptySpaces.push(e.id);
+        }
+    }  
+)
+        let nextPosition = emptySpaces[Math.floor(Math.random()*emptySpaces.length)];
+        if (nextPosition === undefined) {
+            display.innerText= 'TIE GAME';
+            resetBtn.style.display = 'inline';
+        } else {
+        let nextPositionX = nextPosition.slice(0,1);
+        let nextPositionY = nextPosition.slice(3);
+        console.log(nextPositionX,nextPositionY);
+        gameBoard.playerMoves[nextPositionX][nextPositionY] = 'o';
+        boxesArray.forEach(function(e) {
+            if (e.id === nextPosition) {
+                e.innerText='o';
+                
+        }})}
     }
     const playerTurn = (counter) => {
             if (counter % 2 === 0) {
@@ -131,29 +190,46 @@ const gameFlow = (() => {
 
 const checkWinner = (counter) => {
     if  (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[0][1] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[0][2]) {
-        return alert(`Winner is ${gameBoard.playerMoves[0][0]}`);
+        // alert(`Winner is ${gameBoard.playerMoves[0][0]}`)
+        const winner = gameBoard.playerMoves[0][0];
+        const status = true;
+        return {status, winner};
     } else if (gameBoard.playerMoves[1][0]!= null && gameBoard.playerMoves[1][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[1][0]== gameBoard.playerMoves[1][2]) {
-        return alert(`Winner is ${gameBoard.playerMoves[1][0]}`);
+        const winner = gameBoard.playerMoves[1][0];
+        const status = true;
+        return {status, winner};
     }else if (gameBoard.playerMoves[2][0]!= null && gameBoard.playerMoves[2][0] == gameBoard.playerMoves[2][1] && gameBoard.playerMoves[2][0]== gameBoard.playerMoves[2][2]) {
-        return alert(`Winner is ${gameBoard.playerMoves[2][0]}`);
+        const winner = gameBoard.playerMoves[2][0];
+        const status = true;
+        return {status, winner};
     }else if (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[2][2]) {
-        return alert(`Winner is ${gameBoard.playerMoves[0][0]}`); 
+        const winner = gameBoard.playerMoves[0][0];
+        const status = true;
+        return {status, winner};
     }else if (gameBoard.playerMoves[2][0]!= null && gameBoard.playerMoves[2][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[2][0]== gameBoard.playerMoves[0][2]) {
-        return alert(`Winner is ${gameBoard.playerMoves[2][0]}`);
+        const winner = gameBoard.playerMoves[2][0];
+        const status = true;
+        return {status, winner};
     }else if (gameBoard.playerMoves[0][1]!= null && gameBoard.playerMoves[0][1] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[0][1]== gameBoard.playerMoves[2][1]) {
-        return alert(`Winner is ${gameBoard.playerMoves[0][1]}`);
+        const winner = gameBoard.playerMoves[0][1];
+        const status = true;
+        return {status, winner};
     }else if (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[1][0] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[2][0]) {
-        return alert(`Winner is ${gameBoard.playerMoves[0][0]}`);
+        const winner = gameBoard.playerMoves[0][0];
+        const status = true;
+        return {status, winner};
     }else if (gameBoard.playerMoves[0][2]!= null && gameBoard.playerMoves[0][2] == gameBoard.playerMoves[1][2] && gameBoard.playerMoves[0][2]== gameBoard.playerMoves[2][2]) {
-        return alert(`Winner is ${gameBoard.playerMoves[0][2]}`);
-    }else if (counter === 9){
-        return alert('Tie game');
+        const winner = gameBoard.playerMoves[0][2];
+        const status = true;
+        return {status, winner};
+    }
+    else {
+        return false;
     }
 }
 
 const displayController = (() => {
     //starting counter to keep track of turns
-    let counter = 0;
     //add event listener to all boxes
     for (i = 0; boxes.length > 0; i++) {        
         boxes[i].addEventListener('click', function(e) {
@@ -161,42 +237,45 @@ const displayController = (() => {
         if (e.target.innerText === 'x' || e.target.innerText === 'o') {
             return;
         } else{
-            console.log(gameFlow.playerTurn(counter));
-        e.target.innerText = gameFlow.playerTurn(counter);
-        console.log(e.target.id);
-        let arrayNavX = e.target.id.slice(0,1);
-        console.log(arrayNavX);
-        let arrayNavY = e.target.id.slice(3);
-        console.log(arrayNavY);
-        gameBoard.playerMoves[arrayNavX][arrayNavY] = e.target.innerText
-        counter ++;
-        console.log(counter);
-        if (counter === 9){
-            checkWinner(counter);
-        } else {
-    let boxesArray = [...boxes];
-    let emptySpaces=[]
-    boxesArray.forEach(function(e) {
-        if (e.innerText === '') {
-            emptySpaces.push(e.id);
-        }
-    }  
-)
-        let nextPosition = emptySpaces[Math.floor(Math.random()*emptySpaces.length)];
-        let nextPositionX = nextPosition.slice(0,1);
-        let nextPositionY = nextPosition.slice(3);
-        console.log(nextPositionX,nextPositionY);
-        gameBoard.playerMoves[nextPositionX][nextPositionY] = 'o';
-        boxesArray.forEach(function(e) {
-            if (e.id === nextPosition) {
-                e.innerText='o';
-        }})
-    counter ++;
-    checkWinner(counter);
-        }}
+            display.innerText='';
+            e.target.innerText = gameFlow.playerOneMove();
+            console.log(e.target.id);
+            let arrayNavX = e.target.id.slice(0,1);
+            console.log(arrayNavX);
+            let arrayNavY = e.target.id.slice(3);
+            console.log(arrayNavY);
+            gameBoard.playerMoves[arrayNavX][arrayNavY] = e.target.innerText
+            counter ++;
+            console.log(counter);
+            console.log(checkWinner())
+            
+            if (checkWinner().status == true) {
+                console.log('it was true');
+                display.innerText = `Da winner was ${checkWinner().winner}`
+                resetBtn.style.display = 'inline';
+                // for (i = 0; boxes.length > 0; i++) {        
+                // boxes[i].addEventListener('click', function (e){
+                //     if (e.target.innerText === undefined) {
+                //         return;
+                //     }
+                // })}
+                return;
+            }
+                    else if (checkWinner()==false) {
+                        gameFlow.playerTwoMove();
+                        counter++
+                        console.log(counter)
+                        if (checkWinner().status == true) {
+                        display.innerText = `Da winner was ${checkWinner().winner}`
+                        resetBtn.style.display = 'inline';
+                            return;
+                        }
+                        
+                }
+                else return;
+            }
         })}
 })();
-
 
 
 
