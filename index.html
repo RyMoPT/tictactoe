@@ -10,7 +10,7 @@
     background-color: black;
     margin:auto;
     display:grid;
-    height: 400px;
+    height: 430px;
     width: 400px;
     grid-gap: 10px;
     grid-template-rows: repeat(4, 100px);
@@ -79,11 +79,20 @@
 .display {
     grid-area: display;
     background-color: aquamarine;
-    height: 100px;
+    height: 110px;
     width: 400px;
 }
 .resetBtn {
     display: none;
+}
+.resetBtnDiv {
+    text-align: center;
+    padding-top: 30px;
+
+}
+h1 {
+    padding-top: 30px;
+    text-align: center;
 }
 
 </style>
@@ -101,12 +110,13 @@
                 <div class="box8 box" id = '2, 1'></div>
                 <div class="box9 box" id = '2, 2'></div>
             </div>
+            <div class="resetBtnDiv">
             <button class="resetBtn">Play again?</button>
+            </div>
     <script> 
 
 const display = document.querySelector('.display');
 const resetBtn = document.querySelector('.resetBtn');
-let counter = 0;
 resetBtn.addEventListener('click', function (e) {
     resetBoard();
 })
@@ -122,8 +132,6 @@ gameBoard.playerMoves = [
                             [,,,],
                             [,,,]
                             ];
-counter = 0;
-console.log(counter);
 console.log(gameBoard.playerMoves);
 resetBtn.style.display= 'none';
 }
@@ -177,20 +185,12 @@ const gameFlow = (() => {
                 e.innerText='o';
                 
         }})}
-    }
-    const playerTurn = (counter) => {
-            if (counter % 2 === 0) {
-                return gameFlow.playerOneMove();
-            } else {
-                return gameFlow.playerTwoMove();
-            }       
     } 
-    return {playerTurn,playerOneMove,playerTwoMove}
+    return {playerOneMove,playerTwoMove}
 })();
 
-const checkWinner = (counter) => {
+const checkWinner = () => {
     if  (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[0][1] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[0][2]) {
-        // alert(`Winner is ${gameBoard.playerMoves[0][0]}`)
         const winner = gameBoard.playerMoves[0][0];
         const status = true;
         return {status, winner};
@@ -229,42 +229,45 @@ const checkWinner = (counter) => {
 }
 
 const displayController = (() => {
-    //starting counter to keep track of turns
+
     //add event listener to all boxes
     for (i = 0; boxes.length > 0; i++) {        
-        boxes[i].addEventListener('click', function(e) {
-
+        boxes[i].addEventListener('click', (e) => {
+            // make it so that you can't click boxes that have already been clicked
         if (e.target.innerText === 'x' || e.target.innerText === 'o') {
+            console.log('no you cant click this')
             return;
-        } else{
+        //making sure that if someone has one, you cannot make any further changes to the board
+        }else if (checkWinner().status==true && e.target.innerText === ''){
+            console.log('help')
+            return;
+        } else {
+            //player one makes a move and X appears on box they clicked
             display.innerText='';
+            console.log(e.target.innerText);
             e.target.innerText = gameFlow.playerOneMove();
+            console.log(e.target.innerText);
             console.log(e.target.id);
+            //finding the X and Y coordinates of box
             let arrayNavX = e.target.id.slice(0,1);
             console.log(arrayNavX);
             let arrayNavY = e.target.id.slice(3);
             console.log(arrayNavY);
+            // puts the X and Y coordinates into the gameBoard.playerMoves 2d array
             gameBoard.playerMoves[arrayNavX][arrayNavY] = e.target.innerText
-            counter ++;
-            console.log(counter);
             console.log(checkWinner())
-            
+            // checks to see if there was a winner and displays the according text and reset button
             if (checkWinner().status == true) {
-                console.log('it was true');
+                console.log('somebody won');
                 display.innerText = `Da winner was ${checkWinner().winner}`
                 resetBtn.style.display = 'inline';
-                // for (i = 0; boxes.length > 0; i++) {        
-                // boxes[i].addEventListener('click', function (e){
-                //     if (e.target.innerText === undefined) {
-                //         return;
-                //     }
-                // })}
+                console.log(boxes);
+                console.log(boxes.length);
                 return;
             }
-                    else if (checkWinner()==false) {
+            // checks if there was no winner. If not, player 2 is allowed to move then there is a check for a winner again.
+            else if (checkWinner()==false) {
                         gameFlow.playerTwoMove();
-                        counter++
-                        console.log(counter)
                         if (checkWinner().status == true) {
                         display.innerText = `Da winner was ${checkWinner().winner}`
                         resetBtn.style.display = 'inline';
