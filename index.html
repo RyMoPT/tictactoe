@@ -4,19 +4,20 @@
     <head>
 <title>Project: TicTacToe</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
-
+<link href='https://fonts.googleapis.com/css?family=Architects Daughter' rel='stylesheet'>
 <style>
 .container {
     background-color: black;
+    font-family: 'Architects Daughter';
     margin:auto;
     display:grid;
-    height: 430px;
-    width: 400px;
+    line-height: 1;
+    height: 320px;
+    width: 410px;
     grid-gap: 10px;
-    grid-template-rows: repeat(4, 100px);
-    grid-template-columns: repeat(3, 134px);
+    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(3, 130px);
     grid-template-areas: 
-        "display display display"
         "box1 box2 box3"
         "box4 box5 box6"
         "box7 box8 box9"
@@ -76,30 +77,57 @@
     font-size: 100px;
     text-align: center;
 }
-.display {
-    grid-area: display;
-    background-color: aquamarine;
-    height: 110px;
+.topdisplay {
+    background-color: white;
+    height: 80px;
     width: 400px;
+    margin: auto;
+    font-size: 40px;
+    text-align: center;
+    font-family: 'Architects Daughter';
+    line-height: 2;
+
 }
 .resetBtn {
-    display: none;
+    visibility: hidden;
+    border: none;
+    font-family: 'Architects Daughter';
+    font-size: 30px;
+    box-shadow: 5px 7px;
+    margin-bottom: 10px;
+}
+.resetBtn:hover {
+    border: none;
+    font-family: 'Architects Daughter';
+    font-size: 30px;
+    box-shadow: 5px 7px;
+    transform: scale(1.2)
 }
 .resetBtnDiv {
     text-align: center;
     padding-top: 30px;
 
+
 }
 h1 {
-    padding-top: 30px;
     text-align: center;
+    font-size: 10px;
+    font-family: 'Architects Daughter';
+}
+.playerInfo {
+    text-align: center;
+    font-size: 20px;
+    font-family: 'Architects Daughter';
+}
+p {
+    margin: 0px;
 }
 
 </style>
     </head>
     <body>
+        <div class="topdisplay"><strong>Tic Tac Toe!</strong></div>
         <div class="container">
-                <div class='display'></div>
                 <div class="box1 box" id = '0, 0'></div>
                 <div class="box2 box" id = '0, 1'></div>
                 <div class="box3 box" id = '0, 2'></div>
@@ -113,9 +141,13 @@ h1 {
             <div class="resetBtnDiv">
             <button class="resetBtn">Play again?</button>
             </div>
+            <div class="playerInfo">
+                <p>Human = [X] <br>
+                CPU = [O]</p>
+            </div>
     <script> 
 
-const display = document.querySelector('.display');
+const topDisplay = document.querySelector('.topdisplay');
 const resetBtn = document.querySelector('.resetBtn');
 resetBtn.addEventListener('click', function (e) {
     resetBoard();
@@ -126,25 +158,25 @@ let boxesArray = [...boxes];
     boxesArray.forEach(function(e) {
     e.innerText='';
 })
-display.innerText='';
+topDisplay.innerText='';
 gameBoard.playerMoves = [
                             [,,,],
                             [,,,],
                             [,,,]
                             ];
 console.log(gameBoard.playerMoves);
-resetBtn.style.display= 'none';
+resetBtn.style.visibility= 'hidden';
 }
 
 
-const players = (name) => {
-    const getName = () => name;
-    const sayName = () => console.log(`My name is ${name}`);
-    return {getName, sayName}
-}
+// const players = (name) => {
+//     const getName = () => name;
+//     const sayName = () => console.log(`My name is ${name}`);
+//     return {getName, sayName}
+// }
 
-const playerOne = players('playerOne');
-const playerTwo = players('playerTwo');
+// const playerOne = players('playerOne');
+// const playerTwo = players('playerTwo');
 
 const gameBoard = (() => {
     let playerMoves = [
@@ -160,31 +192,40 @@ const boxes = document.querySelectorAll('.box')
 
 const gameFlow = (() => {
     const playerOneMove = () => {
-        return 'x';
+        return 'X';
     }
     const playerTwoMove = () => {
+        //finds all boxes in DOM nodelist then makes it into an array so it can be properly used later
     let boxesArray = [...boxes];
+    // initialize empty array to be able to push IDs (xy coordinates) of boxes
     let emptySpaces=[]
+    // only pushes xy coordinates of empty boxes into emptySpaces array that have not yet been clicked
     boxesArray.forEach(function(e) {
         if (e.innerText === '') {
             emptySpaces.push(e.id);
         }
     }  
 )
+// finds random empty box within the emptySpaces array
         let nextPosition = emptySpaces[Math.floor(Math.random()*emptySpaces.length)];
+        // checks to see if an empty box was actually found in the emptySpace array, if not then that means 
+        // there are no more boxes available and it has become a tie game
         if (nextPosition === undefined) {
-            display.innerText= 'TIE GAME';
-            resetBtn.style.display = 'inline';
+            topDisplay.innerText= 'TIE GAME';
+            resetBtn.style.visibility = 'visible';
         } else {
+            //if an empty box was found, take x and y coordinates
         let nextPositionX = nextPosition.slice(0,1);
         let nextPositionY = nextPosition.slice(3);
         console.log(nextPositionX,nextPositionY);
-        gameBoard.playerMoves[nextPositionX][nextPositionY] = 'o';
-        boxesArray.forEach(function(e) {
+        //adds the letter o to that position in the array holding the data
+        gameBoard.playerMoves[nextPositionX][nextPositionY] = 'O';
+        //displays that same o onto the HTML tictactoe box
+        boxesArray.forEach( (e) => {
             if (e.id === nextPosition) {
-                e.innerText='o';
-                
-        }})}
+                e.innerText='O';
+        }})
+    }
     } 
     return {playerOneMove,playerTwoMove}
 })();
@@ -234,33 +275,27 @@ const displayController = (() => {
     for (i = 0; boxes.length > 0; i++) {        
         boxes[i].addEventListener('click', (e) => {
             // make it so that you can't click boxes that have already been clicked
-        if (e.target.innerText === 'x' || e.target.innerText === 'o') {
+        if (e.target.innerText === 'X' || e.target.innerText === 'O') {
             console.log('no you cant click this')
             return;
-        //making sure that if someone has one, you cannot make any further changes to the board
+        //making sure that if someone has one, you cannot make any further changes to the board by clicking an open spot
         }else if (checkWinner().status==true && e.target.innerText === ''){
-            console.log('help')
+            console.log('cant click this either')
             return;
         } else {
             //player one makes a move and X appears on box they clicked
-            display.innerText='';
-            console.log(e.target.innerText);
+            topDisplay.innerText='';
             e.target.innerText = gameFlow.playerOneMove();
-            console.log(e.target.innerText);
-            console.log(e.target.id);
-            //finding the X and Y coordinates of box
+            //finding the X and Y coordinates of box that was clicked
             let arrayNavX = e.target.id.slice(0,1);
-            console.log(arrayNavX);
             let arrayNavY = e.target.id.slice(3);
-            console.log(arrayNavY);
             // puts the X and Y coordinates into the gameBoard.playerMoves 2d array
             gameBoard.playerMoves[arrayNavX][arrayNavY] = e.target.innerText
-            console.log(checkWinner())
             // checks to see if there was a winner and displays the according text and reset button
             if (checkWinner().status == true) {
                 console.log('somebody won');
-                display.innerText = `Da winner was ${checkWinner().winner}`
-                resetBtn.style.display = 'inline';
+                topDisplay.innerText = `${checkWinner().winner} WINS!`
+                resetBtn.style.visibility = 'visible';
                 console.log(boxes);
                 console.log(boxes.length);
                 return;
@@ -269,8 +304,8 @@ const displayController = (() => {
             else if (checkWinner()==false) {
                         gameFlow.playerTwoMove();
                         if (checkWinner().status == true) {
-                        display.innerText = `Da winner was ${checkWinner().winner}`
-                        resetBtn.style.display = 'inline';
+                        topDisplay.innerText = `${checkWinner().winner} WINS!`
+                        resetBtn.style.visibility = 'visible';
                             return;
                         }
                         
