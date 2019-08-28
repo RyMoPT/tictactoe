@@ -122,21 +122,24 @@ h1 {
 p {
     margin: 0px;
 }
+.winColour {
+    color: red;
+}
 
 </style>
     </head>
     <body>
         <div class="topdisplay"><strong>Tic Tac Toe!</strong></div>
         <div class="container">
-                <div class="box1 box" id = '0, 0'></div>
-                <div class="box2 box" id = '0, 1'></div>
-                <div class="box3 box" id = '0, 2'></div>
-                <div class="box4 box" id = '1, 0'></div>
-                <div class="box5 box" id = '1, 1'></div>
-                <div class="box6 box" id = '1, 2'></div>
-                <div class="box7 box" id = '2, 0'></div>
-                <div class="box8 box" id = '2, 1'></div>
-                <div class="box9 box" id = '2, 2'></div>
+                <div class="box1 box" id = '0 0'></div>
+                <div class="box2 box" id = '0 1'></div>
+                <div class="box3 box" id = '0 2'></div>
+                <div class="box4 box" id = '1 0'></div>
+                <div class="box5 box" id = '1 1'></div>
+                <div class="box6 box" id = '1 2'></div>
+                <div class="box7 box" id = '2 0'></div>
+                <div class="box8 box" id = '2 1'></div>
+                <div class="box9 box" id = '2 2'></div>
             </div>
             <div class="resetBtnDiv">
             <button class="resetBtn">Play again?</button>
@@ -157,6 +160,7 @@ const resetBoard = () => {
 let boxesArray = [...boxes];
     boxesArray.forEach(function(e) {
     e.innerText='';
+    e.classList.remove('winColour');
 })
 topDisplay.innerText='';
 gameBoard.playerMoves = [
@@ -216,7 +220,7 @@ const gameFlow = (() => {
         } else {
             //if an empty box was found, take x and y coordinates
         let nextPositionX = nextPosition.slice(0,1);
-        let nextPositionY = nextPosition.slice(3);
+        let nextPositionY = nextPosition.slice(2);
         console.log(nextPositionX,nextPositionY);
         //adds the letter o to that position in the array holding the data
         gameBoard.playerMoves[nextPositionX][nextPositionY] = 'O';
@@ -230,40 +234,62 @@ const gameFlow = (() => {
     return {playerOneMove,playerTwoMove}
 })();
 
-const checkWinner = () => {
-    if  (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[0][1] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[0][2]) {
-        const winner = gameBoard.playerMoves[0][0];
-        const status = true;
-        return {status, winner};
-    } else if (gameBoard.playerMoves[1][0]!= null && gameBoard.playerMoves[1][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[1][0]== gameBoard.playerMoves[1][2]) {
-        const winner = gameBoard.playerMoves[1][0];
-        const status = true;
-        return {status, winner};
-    }else if (gameBoard.playerMoves[2][0]!= null && gameBoard.playerMoves[2][0] == gameBoard.playerMoves[2][1] && gameBoard.playerMoves[2][0]== gameBoard.playerMoves[2][2]) {
-        const winner = gameBoard.playerMoves[2][0];
-        const status = true;
-        return {status, winner};
-    }else if (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[2][2]) {
-        const winner = gameBoard.playerMoves[0][0];
-        const status = true;
-        return {status, winner};
-    }else if (gameBoard.playerMoves[2][0]!= null && gameBoard.playerMoves[2][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[2][0]== gameBoard.playerMoves[0][2]) {
-        const winner = gameBoard.playerMoves[2][0];
-        const status = true;
-        return {status, winner};
-    }else if (gameBoard.playerMoves[0][1]!= null && gameBoard.playerMoves[0][1] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[0][1]== gameBoard.playerMoves[2][1]) {
-        const winner = gameBoard.playerMoves[0][1];
-        const status = true;
-        return {status, winner};
-    }else if (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[1][0] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[2][0]) {
-        const winner = gameBoard.playerMoves[0][0];
-        const status = true;
-        return {status, winner};
-    }else if (gameBoard.playerMoves[0][2]!= null && gameBoard.playerMoves[0][2] == gameBoard.playerMoves[1][2] && gameBoard.playerMoves[0][2]== gameBoard.playerMoves[2][2]) {
-        const winner = gameBoard.playerMoves[0][2];
-        const status = true;
-        return {status, winner};
+const compare = (a,b,c,) => {
+    return a!= null && a ==b && a == c
+}
+const changeColour = (coords) => {
+    //takes winning coordinates and makes it into array 
+    let separatedCoords = coords.split(',');
+    console.log(separatedCoords)
+    for (i = 0; i < 3; i++){
+    //compares the ID (DOM coordinates) to the winning coords, if there is a match then change the colours of those boxes
+    let boxesArray = [...boxes];
+    boxesArray.forEach(function(e) {
+        console.log(e.id)
+        if (e.id === separatedCoords[i]){
+        e.classList.add('winColour')
     }
+})
+}
+}
+
+const checkWinner = () => {
+//checking matching boxes vertically
+    for (let i = 0; i < 3; i++){
+if (compare(gameBoard.playerMoves[0][i],gameBoard.playerMoves[1][i], gameBoard.playerMoves[2][i])) {
+        const winner = gameBoard.playerMoves[0][i];
+        const status = true;
+        const winCoords = `0 ${[i]},1 ${[i]},2 ${[i]}`;
+        console.log('winning down')
+        console.log(winCoords);
+        changeColour(winCoords);
+        return {status, winner, winCoords};
+}}
+//checking matching boxes horizontally
+for (let i = 0; i < 3; i++){
+ if (compare(gameBoard.playerMoves[i][0],gameBoard.playerMoves[i][1], gameBoard.playerMoves[i][2])){
+        const winner = gameBoard.playerMoves[i][0];
+        const status = true;
+        console.log('winning across')
+        const winCoords = `${[i]} 0,${[i]} 1,${[i]} 2`;
+        changeColour(winCoords);
+        return {status, winner};
+}}
+ //checking diagonally
+    if (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[2][2]) {
+        const winner = gameBoard.playerMoves[0][0];
+        const status = true;
+        const winCoords = `0 0,1 1,2 2`;
+        changeColour(winCoords);
+        return {status, winner};
+        }
+    else if (gameBoard.playerMoves[2][0]!= null && gameBoard.playerMoves[2][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[2][0]== gameBoard.playerMoves[0][2]) {
+        const winner = gameBoard.playerMoves[2][0];
+        const status = true;
+        const winCoords = `2 0,1 1,0 2`;
+        changeColour(winCoords);
+        return {status, winner};
+        }
     else {
         return false;
     }
@@ -288,7 +314,7 @@ const displayController = (() => {
             e.target.innerText = gameFlow.playerOneMove();
             //finding the X and Y coordinates of box that was clicked
             let arrayNavX = e.target.id.slice(0,1);
-            let arrayNavY = e.target.id.slice(3);
+            let arrayNavY = e.target.id.slice(2);
             // puts the X and Y coordinates into the gameBoard.playerMoves 2d array
             gameBoard.playerMoves[arrayNavX][arrayNavY] = e.target.innerText
             // checks to see if there was a winner and displays the according text and reset button
