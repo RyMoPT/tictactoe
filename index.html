@@ -225,10 +225,12 @@ const gameFlow = (() => {
         //adds the letter o to that position in the array holding the data
         gameBoard.playerMoves[nextPositionX][nextPositionY] = 'O';
         //displays that same o onto the HTML tictactoe box
+        window.setTimeout(() =>{
         boxesArray.forEach( (e) => {
             if (e.id === nextPosition) {
                 e.innerText='O';
         }})
+    }, 250)
     }
     } 
     return {playerOneMove,playerTwoMove}
