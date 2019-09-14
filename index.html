@@ -7,6 +7,7 @@
 <link href='https://fonts.googleapis.com/css?family=Architects Daughter' rel='stylesheet'>
 <style>
 .container {
+    transition: background-color 0.4s;
     background-color: black;
     font-family: 'Architects Daughter';
     margin:auto;
@@ -27,55 +28,63 @@
     background-color: white;
     font-size: 100px;
     text-align: center;
-
+    transition: background-color 0.4s;
 }
 .box2 {
     grid-area: box2;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .box3 {
     grid-area: box3;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .box4 {
     grid-area: box4;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .box5 {
     grid-area: box5;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .box6 {
     grid-area: box6;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .box7 {
     grid-area: box7;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .box8 {
     grid-area: box8;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .box9 {
     grid-area: box9;
     background-color: white;
     font-size: 100px;
     text-align: center;
+    transition: background-color 0.4s;
 }
 .topdisplay {
     background-color: white;
@@ -86,7 +95,11 @@
     text-align: center;
     font-family: 'Architects Daughter';
     line-height: 2;
-
+    transition: background-color 0.4s;
+}
+.topdisplayNightMode {
+    color: rgba(245, 245, 245, 0.842);
+    background-color: black;
 }
 .resetBtn {
     visibility: hidden;
@@ -101,7 +114,12 @@
     font-family: 'Architects Daughter';
     font-size: 30px;
     box-shadow: 5px 7px;
-    transform: scale(1.2)
+}
+.resetBtn:active {
+    border: none;
+    font-family: 'Architects Daughter';
+    font-size: 30px;
+    box-shadow: 2px 4px;
 }
 .resetBtnDiv {
     text-align: center;
@@ -118,17 +136,63 @@ h1 {
     text-align: center;
     font-size: 20px;
     font-family: 'Architects Daughter';
+    background-color: white;
+    transition: background-color 0.4s;
+
+}
+.playerInfoNightMode {
+    color: rgba(245, 245, 245, 0.842);
+    background-color: black;
+    transition: all 0.4s;
 }
 p {
     margin: 0px;
 }
 .winColour {
     color: red;
+    transition: all 0.4s;
+
 }
 
+.toggleNightContainer {
+    text-align: center;
+}
+
+.toggleNightBtn {
+    border: none;
+    background-color: #3e3e3e;
+    color: whitesmoke;
+    transition: all 0.4s;
+    box-shadow: 1px 1px;
+}
+
+.nightMode {
+    background-color: black;
+    transition: background-color 0.4s;
+    
+}
+.containerNightMode {
+    color: rgba(245, 245, 245, 0.842);
+    background-color: rgba(245, 245, 245, 0.842);
+    transition: all 0.4s;
+
+    
+}
+
+.nightBtnImg {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+.body {
+    transition: all 0.4s;
+
+}
 </style>
     </head>
-    <body>
+    <body class="body">
         <div class="topdisplay"><strong>Tic Tac Toe!</strong></div>
         <div class="container">
                 <div class="box1 box" id = '0 0'></div>
@@ -148,30 +212,35 @@ p {
                 <p>Human = [X] <br>
                 CPU = [O]</p>
             </div>
+            <div class="toggleNightContainer">
+                <button class="toggleNightBtn">
+                        <img class="nightBtnImg" 
+                        src="http://download.tomtom.com/open/manuals/GO_Mobile_app_for_Android/html/en-gb/nightmodeoff.png">
+                        Toggle Night Mode</button>
     <script> 
 
+
+const toggleNightBtn = document.querySelector('.toggleNightBtn')
+const container = document.querySelector('.container');
 const topDisplay = document.querySelector('.topdisplay');
+const boxes = document.querySelectorAll('.box')
 const resetBtn = document.querySelector('.resetBtn');
+const body = document.querySelector('.body')
+const playerInfo = document.querySelector('.playerInfo')
+
 resetBtn.addEventListener('click', function (e) {
-    resetBoard();
+    gameBoard.resetBoard();
 })
-
-const resetBoard = () => {
-let boxesArray = [...boxes];
-    boxesArray.forEach(function(e) {
-    e.innerText='';
-    e.classList.remove('winColour');
-})
-topDisplay.innerText='';
-gameBoard.playerMoves = [
-                            [,,,],
-                            [,,,],
-                            [,,,]
-                            ];
-console.log(gameBoard.playerMoves);
-resetBtn.style.visibility= 'hidden';
-}
-
+toggleNightBtn.addEventListener('click', () => {
+        for (i=0; i<boxes.length; i++){
+            boxes[i].classList.toggle('nightMode');
+        }
+        topDisplay.classList.toggle('topdisplayNightMode');
+        body.classList.toggle('nightMode');
+        container.classList.toggle('containerNightMode');
+        toggleNightBtn.classList.toggle('nightMode');
+        playerInfo.classList.toggle('playerInfoNightMode');
+    })
 
 // const players = (name) => {
 //     const getName = () => name;
@@ -182,64 +251,173 @@ resetBtn.style.visibility= 'hidden';
 // const playerOne = players('playerOne');
 // const playerTwo = players('playerTwo');
 
+
+//creating 2d array for gameboard
 const gameBoard = (() => {
     let playerMoves = [
-        [,,,],
-        [,,,],
-        [,,,]
+        ['','',''],
+        ['','',''],
+        ['','','']
     ];
-    return {playerMoves};
     
+//function for resetting both the 2d array and the DOM elements
+    const resetBoard = () => {
+    //getting all boxes from DOM
+    let boxesArray = [...boxes];
+        boxesArray.forEach(function(e) {
+        e.innerText='';
+        e.classList.remove('winColour');
+        })
+
+        topDisplay.innerText='';
+        gameBoard.playerMoves = [
+                                ['','',''],
+                                ['','',''],
+                                ['','','']
+                                ];
+        resetBtn.style.visibility= 'hidden';
+        }
+        return {playerMoves,resetBoard};
 })();
 
-const boxes = document.querySelectorAll('.box')
+
+//searches through 2d array to find all indicies of blank space '' and push those indicies into one array
+const findEmptySpots = (board) => {
+    var availSpots = [];
+    for (var i = 0; i < 3; i++){
+      for (var j = 0; j < 3; j ++){
+          if (board[i][j] === '') {
+              availSpots.push([i]+' '+[j])
+          }
+
+      }
+    }
+return availSpots;
+}
 
 const gameFlow = (() => {
     const playerOneMove = () => {
         return 'X';
     }
     const playerTwoMove = () => {
+
+    const minimax = (newBoard,depth,player) => {
+    //creating copy of board being used so that original board is not affected
+    var oldBoard = newBoard.map(inner => inner.slice());
+    
+    console.table(newBoard)
+    console.table(oldBoard)
+
+    var availSpots = findEmptySpots(oldBoard); //finding the indicies of the available spots in the copied board
+        console.log(`available spots are ${availSpots}`)
+        console.log(availSpots)
+
+        // looks for any winning states and scores
+    if (gameStatus.checkWinner(oldBoard).winner=== 'O') {
+        return {score:10 + depth}
+    }else if (gameStatus.checkWinner(oldBoard).winner === 'X') {
+        return {score:depth -10}
+    }else if (availSpots.length ===0){
+        return {score:0}}
+
+    console.log('checked for winner')
+
+    //creating array to store potential moves
+    var moves = [];
+    console.log(`number of available spots is ${availSpots.length}`)
+        for (let i = 0; i < availSpots.length; i++) {
+            console.log(`first avail spot is ${availSpots[i]}`);
+            //creating object to store individual move after iterating through each available spot
+            var move = {};
+            console.log(availSpots[i])
+
+            // assigning an index to object move which holds coordinates for an available spot on the board 
+            move.index = availSpots[i];
+            console.log(move.index)
+
+            //play that available spot onto the oldboard
+            let nextPositionRow = availSpots[i].slice(0,1);
+            let nextPositionCol = availSpots[i].slice(2);                                            
+            oldBoard[nextPositionRow][nextPositionCol] = player;
+
+            if (player === 'O'){
+                var result = minimax(oldBoard,depth +1, 'X');
+                //taking result.score from minimax algorithm that just ran and assigning it to move.score
+                move.score = result.score;
+                console.log(move.score)
+            } else {
+                var result = minimax(oldBoard, depth +1, 'O')
+                move.score = result.score;
+                console.log(move.score)
+
+            }
+            console.log(`move.index is ${move.index}`)
+
+            //resetting board to what it was before
+            console.log(move.index);
+            oldBoard[nextPositionRow][nextPositionCol] = move.index;
+            moves.push(move);
+
+        }
+        console.log(moves);
+        console.log(move)
+
+        var bestMove;
+        if (player === 'X') {
+            var bestScore = 1000;
+
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].score < bestScore) {
+                    bestScore = moves[i].score;
+                    bestMove = i;
+                }
+            }
+        } else  {
+            var bestScore = -1000;
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].score > bestScore) {
+                    bestScore = moves[i].score;
+                    bestMove = i;
+                }
+            }
+        }
+        console.log(moves[bestMove]);
+        console.table(newBoard);
+        console.table(oldBoard);
+
+        return moves[bestMove];
+}
+
         //finds all boxes in DOM nodelist then makes it into an array so it can be properly used later
     let boxesArray = [...boxes];
-    // initialize empty array to be able to push IDs (xy coordinates) of boxes
-    let emptySpaces=[]
-    // only pushes xy coordinates of empty boxes into emptySpaces array that have not yet been clicked
-    boxesArray.forEach(function(e) {
-        if (e.innerText === '') {
-            emptySpaces.push(e.id);
-        }
-    }  
-)
-// finds random empty box within the emptySpaces array
-        let nextPosition = emptySpaces[Math.floor(Math.random()*emptySpaces.length)];
-        // checks to see if an empty box was actually found in the emptySpace array, if not then that means 
-        // there are no more boxes available and it has become a tie game
-        if (nextPosition === undefined) {
-            topDisplay.innerText= 'TIE GAME';
-            resetBtn.style.visibility = 'visible';
-        } else {
-            //if an empty box was found, take x and y coordinates
-        let nextPositionX = nextPosition.slice(0,1);
-        let nextPositionY = nextPosition.slice(2);
-        console.log(nextPositionX,nextPositionY);
-        //adds the letter o to that position in the array holding the data
-        gameBoard.playerMoves[nextPositionX][nextPositionY] = 'O';
-        //displays that same o onto the HTML tictactoe box
-        window.setTimeout(() =>{
+
+        const best = minimax(gameBoard.playerMoves,0,'O').index
+        let nextPositionRow = best.slice(0,1);
+        let nextPositionColumn = best.slice(2);
+        gameBoard.playerMoves[nextPositionRow][nextPositionColumn] = 'O';
+        //displays that same O onto the HTML tictactoe box
         boxesArray.forEach( (e) => {
-            if (e.id === nextPosition) {
+            window.setTimeout(() =>{
+
+            if (e.id === best) {
                 e.innerText='O';
-        }})
-    }, 250)
+            }
+            }, 600)
+        })
+
     }
-    } 
+    
     return {playerOneMove,playerTwoMove}
 })();
 
-const compare = (a,b,c,) => {
-    return a!= null && a ==b && a == c
+
+const gameStatus = (() => {
+
+    const compare = (a,b,c) => {
+    return a!= '' && a ==b && a == c;
 }
-const changeColour = (coords) => {
+
+    const changeColour = (coords) => {
     //takes winning coordinates and makes it into array 
     let separatedCoords = coords.split(',');
     console.log(separatedCoords)
@@ -247,55 +425,60 @@ const changeColour = (coords) => {
     //compares the ID (DOM coordinates) to the winning coords, if there is a match then change the colours of those boxes
     let boxesArray = [...boxes];
     boxesArray.forEach(function(e) {
-        console.log(e.id)
         if (e.id === separatedCoords[i]){
         e.classList.add('winColour')
+            }
+        })
     }
-})
-}
 }
 
-const checkWinner = () => {
+    const checkTie = () => {
+    let availSpots = findEmptySpots(gameBoard.playerMoves);
+    if (availSpots.length===0) {
+        topDisplay.innerText = `TIE GAME`
+        resetBtn.style.visibility = 'visible';
+    }
+}
+
+const checkWinner = (board) => {
 //checking matching boxes vertically
+
     for (let i = 0; i < 3; i++){
-if (compare(gameBoard.playerMoves[0][i],gameBoard.playerMoves[1][i], gameBoard.playerMoves[2][i])) {
-        const winner = gameBoard.playerMoves[0][i];
+if (compare(board[0][i],board[1][i], board[2][i])) {
+        const winner = board[0][i];
         const status = true;
         const winCoords = `0 ${[i]},1 ${[i]},2 ${[i]}`;
-        console.log('winning down')
-        console.log(winCoords);
-        changeColour(winCoords);
+       
         return {status, winner, winCoords};
 }}
 //checking matching boxes horizontally
 for (let i = 0; i < 3; i++){
- if (compare(gameBoard.playerMoves[i][0],gameBoard.playerMoves[i][1], gameBoard.playerMoves[i][2])){
-        const winner = gameBoard.playerMoves[i][0];
+ if (compare(board[i][0],board[i][1], board[i][2])){
+        const winner = board[i][0];
         const status = true;
-        console.log('winning across')
         const winCoords = `${[i]} 0,${[i]} 1,${[i]} 2`;
-        changeColour(winCoords);
-        return {status, winner};
+
+        return {status, winner, winCoords};
 }}
  //checking diagonally
-    if (gameBoard.playerMoves[0][0]!= null && gameBoard.playerMoves[0][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[0][0]== gameBoard.playerMoves[2][2]) {
-        const winner = gameBoard.playerMoves[0][0];
+    if (board[0][0]!= '' && board[0][0] == board[1][1] && board[0][0]== board[2][2]) {
+        const winner = board[0][0];
         const status = true;
         const winCoords = `0 0,1 1,2 2`;
-        changeColour(winCoords);
-        return {status, winner};
+        return {status, winner, winCoords};
         }
-    else if (gameBoard.playerMoves[2][0]!= null && gameBoard.playerMoves[2][0] == gameBoard.playerMoves[1][1] && gameBoard.playerMoves[2][0]== gameBoard.playerMoves[0][2]) {
-        const winner = gameBoard.playerMoves[2][0];
+    else if (board[2][0]!= '' && board[2][0] == board[1][1] && board[2][0]== board[0][2]) {
+        const winner = board[2][0];
         const status = true;
         const winCoords = `2 0,1 1,0 2`;
-        changeColour(winCoords);
-        return {status, winner};
+        return {status, winner, winCoords};
         }
     else {
         return false;
     }
 }
+    return {checkWinner, checkTie, changeColour}
+})();
 
 const displayController = (() => {
 
@@ -304,11 +487,9 @@ const displayController = (() => {
         boxes[i].addEventListener('click', (e) => {
             // make it so that you can't click boxes that have already been clicked
         if (e.target.innerText === 'X' || e.target.innerText === 'O') {
-            console.log('no you cant click this')
             return;
         //making sure that if someone has one, you cannot make any further changes to the board by clicking an open spot
-        }else if (checkWinner().status==true && e.target.innerText === ''){
-            console.log('cant click this either')
+        }else if (gameStatus.checkWinner(gameBoard.playerMoves).status==true && e.target.innerText === ''){
             return;
         } else {
             //player one makes a move and X appears on box they clicked
@@ -319,24 +500,28 @@ const displayController = (() => {
             let arrayNavY = e.target.id.slice(2);
             // puts the X and Y coordinates into the gameBoard.playerMoves 2d array
             gameBoard.playerMoves[arrayNavX][arrayNavY] = e.target.innerText
+            gameStatus.checkTie();
             // checks to see if there was a winner and displays the according text and reset button
-            if (checkWinner().status == true) {
-                console.log('somebody won');
-                topDisplay.innerText = `${checkWinner().winner} WINS!`
+            if (gameStatus.checkWinner(gameBoard.playerMoves).status == true) {
+                topDisplay.innerText = `${gameStatus.checkWinner(gameBoard.playerMoves).winner} WINS!`
                 resetBtn.style.visibility = 'visible';
-                console.log(boxes);
-                console.log(boxes.length);
+                let winningCoords = gameStatus.checkWinner(gameBoard.playerMoves).winCoords;
+                gameStatus.changeColour(winningCoords);
                 return;
             }
             // checks if there was no winner. If not, player 2 is allowed to move then there is a check for a winner again.
-            else if (checkWinner()==false) {
+            else if (gameStatus.checkWinner(gameBoard.playerMoves)==false) {
                         gameFlow.playerTwoMove();
-                        if (checkWinner().status == true) {
-                        topDisplay.innerText = `${checkWinner().winner} WINS!`
+                        gameStatus.checkTie();
+                        if (gameStatus.checkWinner(gameBoard.playerMoves).status == true) {
+                        window.setTimeout(() =>{
+                        topDisplay.innerText = `${gameStatus.checkWinner(gameBoard.playerMoves).winner} WINS!`
+                        let winningCoords = gameStatus.checkWinner(gameBoard.playerMoves).winCoords;
+                        gameStatus.changeColour(winningCoords);
                         resetBtn.style.visibility = 'visible';
                             return;
+                            },600)
                         }
-                        
                 }
                 else return;
             }
