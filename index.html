@@ -188,7 +188,14 @@ p {
 
 .body {
     transition: all 0.4s;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
+.footerNightMode {
+    color: whitesmoke;
 }
 </style>
     </head>
@@ -217,6 +224,11 @@ p {
                         <img class="nightBtnImg" 
                         src="http://download.tomtom.com/open/manuals/GO_Mobile_app_for_Android/html/en-gb/nightmodeoff.png">
                         Toggle Night Mode</button>
+                        </div>
+                        <div class="footer">
+                        <h1>Designed by <a href='https://github.com/RyMoPT'>RyMoPT</a></h1>
+                        </div>
+
     <script> 
 
 
@@ -225,8 +237,8 @@ const container = document.querySelector('.container');
 const topDisplay = document.querySelector('.topdisplay');
 const boxes = document.querySelectorAll('.box')
 const resetBtn = document.querySelector('.resetBtn');
-const body = document.querySelector('.body')
 const playerInfo = document.querySelector('.playerInfo')
+const footer = document.querySelector('.footer')
 
 resetBtn.addEventListener('click', function (e) {
     gameBoard.resetBoard();
@@ -236,7 +248,8 @@ toggleNightBtn.addEventListener('click', () => {
             boxes[i].classList.toggle('nightMode');
         }
         topDisplay.classList.toggle('topdisplayNightMode');
-        body.classList.toggle('nightMode');
+        document.body.classList.toggle('nightMode');
+        footer.classList.toggle('footerNightMode')
         container.classList.toggle('containerNightMode');
         toggleNightBtn.classList.toggle('nightMode');
         playerInfo.classList.toggle('playerInfoNightMode');
@@ -532,7 +545,4 @@ const displayController = (() => {
 
     </script>
     </body>
-    <footer>
-        <h1>Designed by <a href='https://github.com/RyMoPT'>RyMoPT</a></h1>
-    </footer>
 </html>
